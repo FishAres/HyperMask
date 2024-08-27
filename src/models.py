@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from functorch import vmap, combine_state_for_ensemble
+from torch import vmap
 
 
 class HyperNetwork(nn.Module):
@@ -25,6 +25,7 @@ class HyperNetwork(nn.Module):
 class PrimaryNetwork(nn.Module):
     def __init__(self, in_channels, out_channels, kernel_size):
         super(PrimaryNetwork, self).__init__()
+        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)
 
     def forward(self, x, mask):
         masked_weight = self.conv.weight * mask.view_as(self.conv.weight)
